@@ -1,0 +1,14 @@
+{
+        "packets": {
+                 "packet":{
+                        "macaddr": "ABCD::SDF:SS:123:234",
+                         "ipaddr": "10.10.10.20",
+                        "data": "hello hello i am here"
+                        },
+                 "packet":{
+                        "macaddr": "ABSD::SDJ:SE:123:238",
+                        "ipaddr": "10.10.10.50",
+                        "data": "hey how are you"
+                        }
+                    }
+}
