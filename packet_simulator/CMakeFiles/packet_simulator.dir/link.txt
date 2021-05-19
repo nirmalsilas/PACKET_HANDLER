@@ -1,0 +1,2 @@
+/usr/bin/ar cr libpacket_simulator.a  CMakeFiles/packet_simulator.dir/packet_simulator.cpp.o
+/usr/bin/ranlib libpacket_simulator.a
