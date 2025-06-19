@@ -1,23 +1,24 @@
 {
-    "name": "Firewall Configuration",
-    "rules": [
-        {
-            "index": 0,
-            "srcIp": 3232235777,
-            "dstIp": 3232236030,
-            "srcPort": 80,
-            "dstPort": 8080,
-            "protocol": 6,
-            "nextAction": 1
-        },
-        {
-            "index": 1,
-            "srcIp": 167772161,
-            "dstIp": 2886729728,
-            "srcPort": 443,
-            "dstPort": 443,
-            "protocol": 17,
-            "nextAction": 0
-        }
-    ]
+    "firewallTable": {
+        "rules": [
+            {
+                "index": 0,
+                "srcIp": 3232235777,
+                "dstIp": 3232236030,
+                "srcPort": 80,
+                "dstPort": 8080,
+                "protocol": 6,
+                "nextAction": 1
+            },
+            {
+                "index": 1,
+                "srcIp": 167772161,
+                "dstIp": 2886729728,
+                "srcPort": 443,
+                "dstPort": 443,
+                "protocol": 17,
+                "nextAction": 0
+            }
+        ]
+    }
 }

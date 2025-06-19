@@ -8,9 +8,9 @@
 using namespace packetHandler;
 
 void firewallServices::configurationHandler(const nlohmann::json& confstr) {
-    LOG_INFO << "initializing firewall configuration handler...";
+    LOG_INFO << "initializing firewall configuration handler..."<<"\n";
         if (confstr.empty()) {
-            LOG_ERROR << "Configuration string is empty.";
+            LOG_ERROR << "Configuration string is empty."<<"\n";
             std::this_thread::sleep_for(std::chrono::seconds(1));
             return;
         }
@@ -18,10 +18,9 @@ void firewallServices::configurationHandler(const nlohmann::json& confstr) {
         try 
         {
             const nlohmann::json& configJson = confstr;
-            LOG_INFO << "Parsed JSON configuration: " << configJson.dump();
-            if (configJson.contains("firewallTable")) {
-                firewallTable.clear();
-                for (const auto& entry : configJson["firewallTable"]) {
+            LOG_INFO << "Parsed JSON configuration: " << configJson.dump()<<"\n";
+            if (configJson.contains("firewallTable") && configJson["firewallTable"].contains("rules")) {
+                for (const auto& entry : configJson["firewallTable"]["rules"]) {
                     firewalltable tableEntry;
                     tableEntry.index = entry.value("index", 0);
                     tableEntry.srcIp = entry.value("srcIp", 0);
@@ -33,36 +32,37 @@ void firewallServices::configurationHandler(const nlohmann::json& confstr) {
 
                     firewallTable.push_back(tableEntry);
                 }
-                LOG_INFO << "Firewall table configured with " << firewallTable.size() << " entries.";
-            } else {
-                LOG_ERROR << "Configuration JSON does not contain 'firewallTable'.";
+                LOG_INFO << "Firewall table configured with " << firewallTable.size() << " entries."<<"\n";
+            } 
+            else {
+                LOG_ERROR << "Configuration JSON does not contain 'firewallTable.rules'."<<"\n";
             }
         }
+    
         catch (const nlohmann::json::parse_error& e)
         {
-            LOG_ERROR << "JSON parsing error: " << e.what();
+            LOG_ERROR << "JSON parsing error: " << e.what()<<"\n";
         }
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 
 void firewallServices::execute() {
-    LOG_INFO << "Executing firewall service...";
+    LOG_INFO << "Executing firewall service..."<<"\n";
 
     // Load configuration from file configuration.json and give it a configuration handler function in new thread
 
     auto configHandler = [this]() {
-        std::ifstream configFile("configuration.json");
+        std::ifstream configFile("firewall/configuration.json");
         if (!configFile.is_open()) {
-            LOG_ERROR << "Failed to open configuration file.";
+            LOG_ERROR << "Failed to open configuration file."<<"\n";
             return;
         }
         nlohmann::json configJson;
         try {
             configFile >> configJson;
         } catch (const nlohmann::json::parse_error& e) {
-            LOG_ERROR << "JSON parsing error: " << e.what();
+            LOG_ERROR << "JSON parsing error: " << e.what()<<"\n";
             return;
         }
         configFile.close();
@@ -70,7 +70,7 @@ void firewallServices::execute() {
     };
 
     std::thread configThread(configHandler);
-    configThread.detach();   
+    configThread.join();   
 }
 
 

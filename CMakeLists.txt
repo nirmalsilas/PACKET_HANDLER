@@ -15,17 +15,19 @@ add_subdirectory(logger)
 add_subdirectory(eth_ip)
 add_subdirectory(application)
 add_subdirectory(packet_simulator)
+add_subdirectory(builder)
 
 
 include_directories(firewall
                     logger
+                    builder
                     eth_ip
                     application
                     packet_simulator
                     utils/Boost/binary/include
 )
 
-target_link_libraries(${PROJECT_NAME} Logger packet_simulator)
+target_link_libraries(${PROJECT_NAME} Logger packet_simulator firewall)
 
 execute_process(
     COMMAND git status
