@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<packets>
+	<stream>
+		<protocol>17</protocol>
+		<srcIpaddr>10.10.10.10</srcIpaddr>
+		<dstIpaddr>10.10.10.20</dstIpaddr>
+		<payload>kjdsvbjkn</payload>
+	</stream>
+</packets>
+
+	
