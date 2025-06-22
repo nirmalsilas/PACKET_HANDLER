@@ -5,18 +5,7 @@
 
 namespace packetHandler {
 int main(){
-    LOG_INFO << "Starting firewall service...";
-
-    // Create an instance of the firewall service
-    firewallServices firewallService;
-
-    // Build the service
-    firewallService.build();
-
-    // Execute the service
-    firewallService.execute();
-    
+    LOG_INFO << "Starting firewall service...\n";
     return 0;
-
 }
-} // namespace packetHandler
+} // namespace packetHandlers

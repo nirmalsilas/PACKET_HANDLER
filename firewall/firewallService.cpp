@@ -70,6 +70,24 @@ void firewallServices::execute() {
     };
 
     std::thread configThread(configHandler);
+
+    LOG_INFO<<"starting firewall serveice to listen\n";
+    char buffer[256];
+    while(1)
+    {
+        sockaddr_un client_addr;
+        socklen_t client_len = sizeof(client_addr);
+        ssize_t received = recvfrom(fwservice,buffer,sizeof(buffer)-1,0,
+                        (struct sockaddr*)&client_addr, &client_len);
+         if (received > 0) {
+            buffer[received] = '\0'; // Null-terminate
+            LOG_INFO << "Received from client: " << buffer<<"\n";
+            // Process the message as needed
+        } else {
+            LOG_ERROR << "Error receiving data\n";
+        }
+    }
+
     configThread.join();   
 }
 
