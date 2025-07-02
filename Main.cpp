@@ -25,22 +25,7 @@ int main()
     LOG_INFO<<"firewall services executed ..."<<"\n";
     std::thread fwclient(&DaemonBuilder::execute, fwServices);
     sleep(5);
-    const char* fwSocketPath = "/tmp/firewall.sock";
-    int clientSocket = socket(AF_UNIX,SOCK_DGRAM,0);
-    if(clientSocket<0)
-    {
-        LOG_ERROR<<"failed to create socket\n";
-    }
-    struct sockaddr_un addr;
-    memset(&addr,0,sizeof(addr));
-    addr.sun_family =AF_UNIX;
-    strncpy(addr.sun_path, fwSocketPath,sizeof(addr.sun_path)-1);
-    const char* msg = "hello firewall good morning";
-    ssize_t sent = sendto(clientSocket,msg,strlen(msg),0, (struct sockaddr*)&addr,sizeof(addr));
-    if(sent ==-1) LOG_ERROR<<"failed to send to firewall"<<"\n";
-    else LOG_INFO<<"data send to firewall\n";
-
-    close(clientSocket);
+    
     fwclient.join();
 
 
