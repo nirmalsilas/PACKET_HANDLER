@@ -51,7 +51,7 @@ void firewallServices::execute() {
     LOG_INFO << "Executing firewall service..."<<"\n";
 
     // Load configuration from file configuration.json and give it a configuration handler function in new thread
-
+    /*
     auto configHandler = [this]() {
         std::ifstream configFile("firewall/configuration.json");
         if (!configFile.is_open()) {
@@ -70,9 +70,9 @@ void firewallServices::execute() {
     };
 
     std::thread configThread(configHandler);
-
+    */
     LOG_INFO<<"starting firewall serveice to listen\n";
-    char buffer[256];
+    char buffer[4956];
     while(1)
     {
         sockaddr_un client_addr;
@@ -82,13 +82,19 @@ void firewallServices::execute() {
          if (received > 0) {
             buffer[received] = '\0'; // Null-terminate
             LOG_INFO << "Received from client: " << buffer<<"\n";
-            // Process the message as needed
+            nlohmann::json json;
+            try {
+                json = nlohmann::json::parse(std::string(buffer));
+                configurationHandler(json);
+            } catch (const nlohmann::json::parse_error& e) {
+                LOG_ERROR << "JSON parsing error: " << e.what() << "\n";
+            }
         } else {
             LOG_ERROR << "Error receiving data\n";
         }
     }
 
-    configThread.join();   
+   // configThread.join();   
 }
 
 
